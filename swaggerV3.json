@@ -1,0 +1,507 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "NotionONE API",
+        "description": "Demonstration of NotionONE API Documentation",
+        "version": "0.1"
+    },
+    "host": "example.com",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/api",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/workorders": {
+            "get": {
+                "summary": "Returns all workorders for a date and project.",
+                "description": "The Workorders endpoint returns all workorders for a specified date and project. Workorders are returned in an object that includes an iteratable list and the number of results returned.",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Date to search for Workorders.",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "departmentID",
+                        "in": "query",
+                        "description": "Department ID to search for Workorders.",
+                        "required": true,
+                        "type": "number",
+                        "format": "int"
+                    }
+                ],
+                "tags": [
+                    "Workorders"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Object containing iteratable list of workorders and number of workorders returned.",
+                        "schema": {
+                            "$ref": "WorkorderArray"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a new Workorder.",
+                "description": "Creates a new workorder.\n",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "Workorder"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Workorders"
+                ]
+            }
+        },
+        "/workorders/unscheduled": {
+            "get": {
+                "summary": "Returns unscheduled Workorders for a date and project.",
+                "description": "The Unscheduled Workorders endpoint returns information about\nunscheduled workorders given the date and department ID.\n",
+                "responses": {
+                    "200": {
+                        "description": "An array of Workorders",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "Workorder"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected Error",
+                        "schema": {
+                            "$ref": "Error"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Date to seach for unscheduled Workorders.",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "departmentID",
+                        "in": "query",
+                        "description": "Department ID to search for unscheduled Workorders.",
+                        "required": true,
+                        "type": "number",
+                        "format": "int"
+                    }
+                ],
+                "tags": [
+                    "Workorders"
+                ]
+            }
+        },
+        "/workorders/forprojects": {
+            "get": {
+                "summary": "Returns workorders for the specified project(s).",
+                "description": "The For Projects endpoint returns workorders for one or more\nprojects. Project IDs are passed to the API in a comma-\nseparated list in the query.\n",
+                "responses": {
+                    "200": {
+                        "description": "An array of Workorders",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "Workorder"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "projectIds",
+                        "in": "query",
+                        "description": "Comma-separated list of project IDs.",
+                        "required": true,
+                        "type": "array",
+                        "collectionFormat": "csv",
+                        "items": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Workorders"
+                ]
+            }
+        },
+        "/workorders/{id}": {
+            "get": {
+                "summary": "Returns a specified workorder.",
+                "description": "The {id} endpoint returns the workorder requested by the ID.\n",
+                "responses": {
+                    "200": {
+                        "description": "An array of Workorders",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "Workorder"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Workorder to retrieve.",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "Workorders"
+                ]
+            },
+            "put": {
+                "summary": "Creates a Workorder with the specified ID.",
+                "description": "The {id} endpoint creates a Workorder with a specified ID.\n",
+                "responses": {
+                    "200": {
+                        "description": "An array of Workorders",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "Workorder"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Workorder to create.",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "Workorders"
+                ]
+            },
+            "delete": {
+                "summary": "Deletes a Workorder with the specified ID.",
+                "description": "The {id} endpoint deletes a Workorder with a specified ID.\n",
+                "responses": {
+                    "200": {
+                        "description": "Deletion successful."
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Workorder to delete.",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "Workorders"
+                ]
+            }
+        },
+        "/workorders/{id}/workordertimes": {
+            "get": {
+                "summary": "Returns an array of timeslots for the Workorder.",
+                "description": "Returns an array of timeslots for the Workorder.",
+                "responses": {
+                    "200": {
+                        "description": "Workorder timeslots.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Workorder to retrieve timeslots for.",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "Workorders",
+                    "Workorder Sub-Resources"
+                ]
+            }
+        },
+        "/workorders/{id}/requester": {
+            "get": {
+                "summary": "Returns the requester of the Workorder.",
+                "description": "Returns the requester of the Workorder.",
+                "responses": {
+                    "200": {
+                        "description": "Requester",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Workorder to retrieve requester for.",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "Workorders",
+                    "Workorder Sub-Resources"
+                ]
+            }
+        },
+        "/workorders/{id}/project": {
+            "get": {
+                "summary": "Returns the project of the Workorder.",
+                "description": "Returns the project of the Workorder",
+                "responses": {
+                    "200": {
+                        "description": "Project",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Workorder to retrieve project for.",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "Workorders",
+                    "Workorder Sub-Resources"
+                ]
+            }
+        },
+        "/workorders/{id}/projectservices": {
+            "get": {
+                "summary": "Returns project services of the Workorder.",
+                "description": "Returns project services of the Workorder.",
+                "responses": {
+                    "200": {
+                        "description": "Project Services",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Workorder to retrieve project services for.",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "Workorders",
+                    "Workorder Sub-Resources"
+                ]
+            }
+        },
+        "/workorders/{groupId}/group": {
+            "get": {
+                "summary": "Returns the group.",
+                "description": "Returns the group.",
+                "responses": {
+                    "200": {
+                        "description": "Workorder",
+                        "schema": {
+                            "$ref": "Workorder"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "groupId",
+                        "in": "path",
+                        "description": "Group name to retrieve.",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Workorders",
+                    "Workorder Sub-Resources"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "WorkorderArray": {
+            "type": "object",
+            "properties": {
+                "workorders": {
+                    "description": "Iteratable list of workorders.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "Id": {
+                                "description": "Workorder ID",
+                                "type": "integer"
+                            },
+                            "ProjectAlias": {
+                                "description": "Alias of workorder project.",
+                                "type": "string"
+                            },
+                            "Project Name": {
+                                "description": "Name of workorder project.",
+                                "type": "string"
+                            },
+                            "Classification": {
+                                "description": "Classification of project service.",
+                                "type": "string"
+                            },
+                            "ProjectNumber": {
+                                "description": "Number of workorder project.",
+                                "type": "integer"
+                            },
+                            "ServiceName": {
+                                "description": "Name of project service.",
+                                "type": "string"
+                            },
+                            "DisplayName": {
+                                "description": "Display name of workorder.",
+                                "type": "string"
+                            },
+                            "StartDate": {
+                                "description": "Start date of workorder",
+                                "type": "string",
+                                "format": "date"
+                            },
+                            "Times": {
+                                "description": "Iteratable list of time entries of workorder.",
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "Alias": {
+                                            "description": "Alias of workorder project.",
+                                            "type": "string"
+                                        },
+                                        "ColorCode": {
+                                            "description": "Color code of project service.",
+                                            "type": "string"
+                                        },
+                                        "Comments": {
+                                            "description": "Comments.",
+                                            "type": "string"
+                                        },
+                                        "DeletedOn": {
+                                            "description": "Date of workorder deletion.",
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "IconClass": {
+                                            "description": "Icon class of project service.",
+                                            "type": "string"
+                                        },
+                                        "Id": {
+                                            "description": "ID of time entry.",
+                                            "type": "integer"
+                                        },
+                                        "ScheduledEnd": {
+                                            "description": "Date and time scheduled for end of time item.",
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "ScheduledStart": {
+                                            "description": "Date and time scheduled for start of time item.",
+                                            "format": "date",
+                                            "type": "string"
+                                        },
+                                        "ServiceName": {
+                                            "description": "Name of project service for workorder.",
+                                            "type": "string"
+                                        },
+                                        "Status": {
+                                            "description": "Status of time item.",
+                                            "type": "string"
+                                        },
+                                        "SubmittedTechnicianId": {
+                                            "description": "ID of technician who submitted time item.",
+                                            "type": "integer"
+                                        },
+                                        "TechnicianId": {
+                                            "description": "ID of technician to perform time item.",
+                                            "type": "integer"
+                                        },
+                                        "TimeOfDay": {
+                                            "description": "Time of day to perform time item.",
+                                            "type": "string"
+                                        },
+                                        "WorkorderComments": {
+                                            "description": "Comments from workorder.",
+                                            "type": "string"
+                                        },
+                                        "WorkorderId": {
+                                            "description": "ID of workorder.",
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "items": {
+                    "description": "Count of returned workorders.",
+                    "type": "integer"
+                }
+            }
+        },
+        "Workorder": {
+            "type": "array"
+        },
+        "Error": {
+            "properties": {
+                "error_code": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
